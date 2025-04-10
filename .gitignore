@@ -1,0 +1,11 @@
+server/.DS_Store
+.DS_Store
+server/.env
+.env
+server/node_modules
+node_modules
+server/public/temp
+.DS_Store
+server/src/controllers/sales/bill.controllers.js
+server/src/controllers/sales/salesSummary.controller.js
+server/src/models/sales/bill.modles.js

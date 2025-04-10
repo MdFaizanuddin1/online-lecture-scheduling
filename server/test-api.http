@@ -1,0 +1,112 @@
+### Register an admin user
+POST http://localhost:8001/api/v1/auth/register
+Content-Type: application/json
+
+{
+  "name": "Admin User",
+  "email": "admin@example.com",
+  "password": "password123",
+  "role": "admin"
+}
+
+### Register an instructor
+POST http://localhost:8001/api/v1/auth/register
+Content-Type: application/json
+
+{
+  "name": "Instructor User",
+  "email": "instructor@example.com",
+  "password": "password123",
+  "role": "instructor"
+}
+
+### Login as admin
+POST http://localhost:8001/api/v1/auth/login
+Content-Type: application/json
+
+{
+  "email": "admin@example.com",
+  "password": "password123"
+}
+
+### Login as instructor
+POST http://localhost:8001/api/v1/auth/login
+Content-Type: application/json
+
+{
+  "email": "instructor@example.com",
+  "password": "password123"
+}
+
+### Create a course (admin only)
+POST http://localhost:8001/api/v1/courses
+Content-Type: application/json
+Authorization: Bearer YOUR_ACCESS_TOKEN
+
+{
+  "name": "Introduction to Computer Science",
+  "code": "CS101",
+  "description": "An introductory course to computer science concepts",
+  "duration": 60
+}
+
+### Get all courses
+GET http://localhost:8001/api/v1/courses
+Authorization: Bearer YOUR_ACCESS_TOKEN
+
+### Get a specific course
+GET http://localhost:8001/api/v1/courses/COURSE_ID
+Authorization: Bearer YOUR_ACCESS_TOKEN
+
+### Update a course (admin only)
+PUT http://localhost:8001/api/v1/courses/COURSE_ID
+Content-Type: application/json
+Authorization: Bearer YOUR_ACCESS_TOKEN
+
+{
+  "name": "Advanced Computer Science",
+  "description": "An advanced course in computer science concepts"
+}
+
+### Add a batch to a course (admin only)
+POST http://localhost:8001/api/v1/batches/course/COURSE_ID
+Content-Type: application/json
+Authorization: Bearer YOUR_ACCESS_TOKEN
+
+{
+  "name": "Spring 2024",
+  "startDate": "2024-01-15T09:00:00.000Z",
+  "endDate": "2024-05-15T09:00:00.000Z",
+  "capacity": 40
+}
+
+### Get all batches for a course
+GET http://localhost:8001/api/v1/batches/course/COURSE_ID
+Authorization: Bearer YOUR_ACCESS_TOKEN
+
+### Create a lecture (admin only)
+POST http://localhost:8001/api/v1/lectures
+Content-Type: application/json
+Authorization: Bearer YOUR_ACCESS_TOKEN
+
+{
+  "courseId": "COURSE_ID",
+  "instructorId": "INSTRUCTOR_ID",
+  "title": "Introduction to Programming",
+  "description": "Learn the basics of programming",
+  "startTime": "2024-01-20T09:00:00.000Z",
+  "endTime": "2024-01-20T11:00:00.000Z",
+  "location": "Classroom A"
+}
+
+### Get all lectures
+GET http://localhost:8001/api/v1/lectures
+Authorization: Bearer YOUR_ACCESS_TOKEN
+
+### Get instructor's lectures (for an instructor)
+GET http://localhost:8001/api/v1/lectures/my-lectures
+Authorization: Bearer YOUR_ACCESS_TOKEN
+
+### Delete a course (admin only)
+DELETE http://localhost:8001/api/v1/courses/COURSE_ID
+Authorization: Bearer YOUR_ACCESS_TOKEN 
