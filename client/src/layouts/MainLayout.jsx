@@ -74,9 +74,9 @@ const MainLayout = () => {
             <div className="hidden sm:ml-6 sm:flex sm:items-center">
               {isAuthenticated ? (
                 <div className="flex items-center space-x-4">
-                  <span className="text-text-light">
+                  {/* <span className="text-text-light">
                     {user?.name} ({user?.role})
-                  </span>
+                  </span> */}
                   <button
                     onClick={handleLogout}
                     className="text-text-light hover:text-primary flex items-center space-x-1"
