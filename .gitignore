@@ -4,5 +4,4 @@ server/.env
 .env
 server/node_modules
 node_modules
-server/public/temp
 .DS_Store
