@@ -6,7 +6,7 @@ import { uploadOnCloudinary, deleteFromCloudinary } from "../utils/cloudinary.js
 
 // Create a new course
 const createCourse = asyncHandler(async (req, res) => {
-  const { name, code, description, level } = req.body;
+  const { name, code, description, level, batches } = req.body;
 
   if (!name || !code || !description || !level) {
     throw new ApiError(400, "All fields are required");
@@ -26,6 +26,18 @@ const createCourse = asyncHandler(async (req, res) => {
     level,
     createdBy: req.user._id
   };
+
+  // Parse and add batches if provided
+  if (batches) {
+    try {
+      const parsedBatches = JSON.parse(batches);
+      if (Array.isArray(parsedBatches) && parsedBatches.length > 0) {
+        courseData.batches = parsedBatches;
+      }
+    } catch (error) {
+      console.error("Error parsing batches:", error);
+    }
+  }
 
   // Handle thumbnail upload
   if (req.file) {
@@ -108,9 +120,78 @@ const deleteCourse = asyncHandler(async (req, res) => {
   );
 });
 
+// Update course
+const updateCourse = asyncHandler(async (req, res) => {
+  const { courseId } = req.params;
+  const { name, code, description, level, batches } = req.body;
+
+  const course = await Course.findById(courseId);
+  if (!course) {
+    throw new ApiError(404, "Course not found");
+  }
+
+  // Prepare update data
+  const updateData = {};
+  
+  if (name) updateData.name = name;
+  if (description) updateData.description = description;
+  if (level) updateData.level = level;
+  
+  // Check if code is being changed and is unique
+  if (code && code !== course.code) {
+    const existingCourse = await Course.findOne({ code });
+    if (existingCourse) {
+      throw new ApiError(409, "Course with this code already exists");
+    }
+    updateData.code = code;
+  }
+
+  // Process batches if provided
+  if (batches) {
+    try {
+      const parsedBatches = JSON.parse(batches);
+      if (Array.isArray(parsedBatches)) {
+        updateData.batches = parsedBatches;
+      }
+    } catch (error) {
+      console.error("Error parsing batches:", error);
+    }
+  }
+
+  // Handle thumbnail upload
+  if (req.file) {
+    try {
+      const thumbnailLocalPath = req.file.path;
+      const uploadResponse = await uploadOnCloudinary(thumbnailLocalPath);
+      
+      if (uploadResponse) {
+        // Delete old thumbnail if exists
+        if (course.thumbnail) {
+          await deleteFromCloudinary(course.thumbnail);
+        }
+        updateData.thumbnail = uploadResponse.url;
+      }
+    } catch (error) {
+      console.error("Error uploading thumbnail:", error);
+    }
+  }
+
+  // Update the course
+  const updatedCourse = await Course.findByIdAndUpdate(
+    courseId, 
+    updateData, 
+    { new: true, runValidators: true }
+  );
+
+  return res.status(200).json(
+    new ApiResponse(200, updatedCourse, "Course updated successfully")
+  );
+});
+
 export {
   createCourse,
   getAllCourses,
   getCourseById,
-  deleteCourse
+  deleteCourse,
+  updateCourse
 }; 

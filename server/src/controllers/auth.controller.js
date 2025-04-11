@@ -89,6 +89,18 @@ const logoutUser = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, {}, "User logged out"));
 });
 
+const getCurrentUser = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.user._id).select("-password");
+  
+  if (!user) {
+    throw new ApiError(404, "User not found");
+  }
+  
+  return res.status(200).json(
+    new ApiResponse(200, user, "User details fetched successfully")
+  );
+});
+
 const getAllInstructors = asyncHandler (async(req,res)=>{
     const instructors = await User.find({role:"instructor"})
     if(!instructors) throw new ApiError(500, "No instructors found")
@@ -165,5 +177,12 @@ const updateInstructor = asyncHandler(async (req, res) => {
   );
 });
 
-
-export { registerUser, loginUser, logoutUser, getAllInstructors, createInstructor, updateInstructor }; 
+export { 
+  registerUser, 
+  loginUser, 
+  logoutUser, 
+  getCurrentUser,
+  getAllInstructors, 
+  createInstructor, 
+  updateInstructor 
+}; 

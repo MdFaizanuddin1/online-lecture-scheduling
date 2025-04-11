@@ -1,0 +1,78 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-background text-text;
+    font-family: 'Inter', sans-serif;
+  }
+
+  h1 {
+    @apply text-3xl font-bold;
+  }
+
+  h2 {
+    @apply text-2xl font-bold;
+  }
+
+  h3 {
+    @apply text-xl font-bold;
+  }
+
+  h4 {
+    @apply text-lg font-semibold;
+  }
+}
+
+@layer components {
+  .btn {
+    @apply inline-flex items-center justify-center px-4 py-2 rounded-md font-medium transition-colors;
+  }
+
+  .btn-primary {
+    @apply bg-primary text-white hover:bg-secondary;
+  }
+  
+  .btn-outline {
+    @apply border border-primary text-primary hover:bg-primary hover:text-white;
+  }
+
+  .btn-secondary {
+    @apply bg-secondary text-white hover:opacity-90;
+  }
+
+  .btn-success {
+    @apply bg-success text-white hover:opacity-90;
+  }
+
+  .btn-error {
+    @apply bg-error text-white hover:opacity-90;
+  }
+
+  .card {
+    @apply bg-card border border-border rounded-lg shadow-sm p-6;
+  }
+
+  .form-group {
+    @apply flex flex-col mb-4;
+  }
+
+  .form-label {
+    @apply block text-sm font-medium mb-1 text-text;
+  }
+
+  .form-input {
+    @apply block w-full rounded-md border-border p-2 shadow-sm focus:border-primary focus:ring-primary;
+  }
+
+  .form-select {
+    @apply block w-full rounded-md border-border p-2 shadow-sm focus:border-primary focus:ring-primary;
+  }
+
+  .form-error {
+    @apply text-sm text-error mt-1;
+  }
+} 
